@@ -13,6 +13,7 @@
 /resources/views/components/home_made_by_builder
 /storage/*.key
 /vendor
+marobook/
 .env.backup
 .env.production
 .env
