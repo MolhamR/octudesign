@@ -36,6 +36,13 @@ Route::name('instructor.')->prefix('instructor')->middleware(['instructor'])->gr
     // dashboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // ShamCash wallet routes
+    Route::controller(\App\Http\Controllers\ShamCashController::class)->group(function () {
+        Route::get('wallet', 'instructorWallet')->name('wallet.show');
+        Route::post('wallet/withdraw', 'withdraw')->name('wallet.withdraw');
+        Route::post('wallet/sham-cash-account', 'saveAccount')->name('wallet.sham_cash.account.update');
+    });
+
     // Courses route
     Route::controller(CourseController::class)->group(function () {
         Route::get('courses', 'index')->name('courses');
@@ -56,6 +63,17 @@ Route::name('instructor.')->prefix('instructor')->middleware(['instructor'])->gr
         Route::post('section/update', 'update')->name('section.update');
         Route::get('section/delete/{id}', 'delete')->name('section.delete');
         Route::post('section/sort', 'sort')->name('section.sort');
+    });
+
+    // Library (books) route
+    Route::controller(\App\Http\Controllers\instructor\LibraryController::class)->group(function () {
+        Route::get('library', 'index')->name('library');
+        Route::get('library/create', 'create')->name('library.create');
+        Route::post('library/store', 'store')->name('library.store');
+        Route::get('library/edit/{id}', 'edit')->name('library.edit');
+        Route::post('library/update/{id}', 'update')->name('library.update');
+        Route::get('library/delete/{id}', 'delete')->name('library.delete');
+        Route::get('library/status/{id}', 'status')->name('library.status');
     });
 
     // Lesson route

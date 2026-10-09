@@ -21,6 +21,7 @@ use App\Http\Controllers\student\ReviewController;
 use App\Http\Controllers\student\WishListController;
 use App\Http\Controllers\student\TutorBookingController;
 use App\Http\Controllers\WalletController;
+use App\Http\Controllers\ShamCashController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
@@ -34,6 +35,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my-wallet', [WalletController::class, 'show'])->name('wallet.show');
     Route::post('/wallet/pay', [WalletController::class, 'payWithWallet'])->name('wallet.pay');
     Route::get('/wallet/balance', [WalletController::class, 'getWalletBalance'])->name('wallet.balance');
+
+    // ShamCash wallet top-up routes
+    Route::controller(ShamCashController::class)->group(function () {
+        Route::post('/wallet/sham-cash-account', 'saveAccount')->name('wallet.sham_cash.account.update');
+        Route::post('/wallet/top-up', 'requestTopUp')->name('wallet.sham_cash.top_up');
+        Route::get('/wallet/top-up/verify', 'showTopUpVerify')->name('wallet.sham_cash.verify');
+        Route::post('/wallet/verify-payments', 'verifyPayments')->name('wallet.sham_cash.verify_payments');
+    });
 
 
     // my wishlist routes
@@ -67,6 +76,19 @@ Route::middleware(['auth'])->group(function () {
         Route::any('cart', 'index')->name('cart');
         Route::get('cart/store/{id}', 'store')->name('cart.store');
         Route::get('cart/delete/{id}', 'delete')->name('cart.delete');
+    });
+
+    // library (books) routes
+    Route::controller(\App\Http\Controllers\student\LibraryController::class)->group(function () {
+        Route::get('purchase/library/{id}', 'purchase')->name('purchase.library');
+        Route::any('my-library/cart', 'cart')->name('library.cart');
+        Route::get('my-library/cart/store/{id}', 'cart_store')->name('library.cart.store');
+        Route::get('my-library/cart/delete/{id}', 'cart_delete')->name('library.cart.delete');
+        Route::post('my-library/payout', 'payout')->name('library.payout');
+        Route::get('my-library', 'my_library')->name('my.library');
+        Route::get('library/read/{slug}', 'read')->name('library.read');
+        Route::get('library/stream/{id}', 'stream')->name('library.stream');
+        Route::get('library/download/{id}', 'download')->name('library.download');
     });
 
     // review routes

@@ -30,6 +30,8 @@
             'admin.revenue' => get_phrase('Admin Revenue'),
             'admin.instructor.revenue' => get_phrase('Instructor Revenue'),
             'admin.purchase.history' => get_phrase('Purchase history'),
+            'admin.library.categories' => get_phrase('Library Categories'),
+            'admin.library.items' => get_phrase('Library Books'),
             'admin.instructor.index' => get_phrase('Instructor'),
             'admin.admins.index' => get_phrase('Admin'),
             'admin.student.index' => get_phrase('Student'),

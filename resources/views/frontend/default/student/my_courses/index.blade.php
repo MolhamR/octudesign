@@ -9,7 +9,7 @@
             <div class="row">
                 @include('frontend.default.student.left_sidebar')
 
-                <div class="col-lg-9 px-4">
+                <div class="col-lg-9 px-4 my-courses-scroll-panel">
                     <h4 class="g-title">{{ get_phrase('My Courses') }}</h4>
                     <div class="row mt-5">
                         @foreach ($my_courses as $course)

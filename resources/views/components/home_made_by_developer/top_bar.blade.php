@@ -37,13 +37,13 @@
 
                     <ul class="d-flex">
                         <li class="primary-end">
-                            <form action="{{ route('select.lng') }}" method="get">
-                                <select name="language" id="lng-selector" class="form-select nice-control">
+                            <form action="{{ url('select-language') }}" method="get">
+                                <select name="language" id="lng-selector" class="form-select nice-control" onchange="this.form.submit()">
                                     @php
                                         $activated_language = strtolower(session('language') ?? get_settings('language'));
                                     @endphp
                                     @foreach (App\Models\Language::all() as $lng)
-                                        <option value="{{ $lng->name }}" @selected(strtolower($lng->name) == $activated_language)>{{ $lng->name }}</option>
+                                        <option value="{{ strtolower($lng->name) }}" @selected(strtolower($lng->name) == $activated_language)>{{ $lng->name }}</option>
                                     @endforeach
                                 </select>
                             </form>

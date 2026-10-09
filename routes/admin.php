@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\OpenAiController;
 use App\Http\Controllers\Admin\PageBuilderController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\QuizController;
+use App\Http\Controllers\Admin\SystemWalletController;
 use App\Http\Controllers\Admin\TeamTrainingController;
 use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\BlogController;
@@ -59,6 +60,23 @@ Route::name('admin.')->prefix('admin')->middleware('admin')->group(function () {
     Route::get('category/edit', [CategoryController::class, 'edit'])->name('category.edit');
     Route::post('category/update/{id}', [CategoryController::class, 'update'])->name('category.update');
     Route::get('category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
+
+    //Library category
+    Route::get('library/categories', [\App\Http\Controllers\Admin\LibraryCategoryController::class, 'index'])->name('library.categories');
+    Route::post('library/category/store', [\App\Http\Controllers\Admin\LibraryCategoryController::class, 'store'])->name('library.category.store');
+    Route::get('library/category/edit/{id}', [\App\Http\Controllers\Admin\LibraryCategoryController::class, 'edit'])->name('library.category.edit');
+    Route::post('library/category/update/{id}', [\App\Http\Controllers\Admin\LibraryCategoryController::class, 'update'])->name('library.category.update');
+    Route::get('library/category/delete/{id}', [\App\Http\Controllers\Admin\LibraryCategoryController::class, 'delete'])->name('library.category.delete');
+    Route::get('library/category/status/{id}', [\App\Http\Controllers\Admin\LibraryCategoryController::class, 'status'])->name('library.category.status');
+
+    //Library books
+    Route::get('library/items', [\App\Http\Controllers\Admin\LibraryItemController::class, 'index'])->name('library.items');
+    Route::get('library/item/create', [\App\Http\Controllers\Admin\LibraryItemController::class, 'create'])->name('library.item.create');
+    Route::post('library/item/store', [\App\Http\Controllers\Admin\LibraryItemController::class, 'store'])->name('library.item.store');
+    Route::get('library/item/edit/{id}', [\App\Http\Controllers\Admin\LibraryItemController::class, 'edit'])->name('library.item.edit');
+    Route::post('library/item/update/{id}', [\App\Http\Controllers\Admin\LibraryItemController::class, 'update'])->name('library.item.update');
+    Route::get('library/item/delete/{id}', [\App\Http\Controllers\Admin\LibraryItemController::class, 'delete'])->name('library.item.delete');
+    Route::get('library/item/status/{id}', [\App\Http\Controllers\Admin\LibraryItemController::class, 'status'])->name('library.item.status');
 
     //Courses
     Route::get('courses', [CourseController::class, 'index'])->name('courses');
@@ -213,6 +231,10 @@ Route::name('admin.')->prefix('admin')->middleware('admin')->group(function () {
         Route::get('system_settings', 'system_settings')->name('system.settings');
         Route::post('system_settings/update', 'system_settings_update')->name('system.settings.update');
 
+        //sham cash settings
+        Route::get('sham_cash_settings', 'sham_cash_settings')->name('sham_cash.settings');
+        Route::post('sham_cash_settings/update', 'sham_cash_settings_update')->name('sham_cash.settings.update');
+
         //website settings
         Route::get('website_settings', 'website_settings')->name('website.settings');
         Route::post('website_settings/update', 'website_settings_update')->name('website.settings.update');
@@ -333,6 +355,12 @@ Route::name('admin.')->prefix('admin')->middleware('admin')->group(function () {
 
     Route::get('/wallet', [WalletController::class, 'adminWallet'])->name('wallet');
     Route::post('/wallet/add-funds', [WalletController::class, 'addFunds'])->name('wallet.add');
+
+    // System wallet (profits)
+    Route::controller(SystemWalletController::class)->group(function () {
+        Route::get('system-wallet', 'index')->name('system.wallet');
+        Route::post('system-wallet/transfer', 'transfer')->name('system.wallet.transfer');
+    });
 
 
     // coupon

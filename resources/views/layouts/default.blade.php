@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+@php
+    $activeLanguage = strtolower(session('language') ?? get_settings('language') ?? 'arabic');
+    $activeDirection = \App\Models\Language::whereRaw('LOWER(name) = ?', [$activeLanguage])->value('direction') ?? ($activeLanguage === 'english' ? 'ltr' : 'rtl');
+    $activeLocale = $activeDirection === 'rtl' ? 'ar' : 'en';
+@endphp<html lang="{{ $activeLocale }}" dir="{{ $activeDirection }}">
 
 <head>
     @include('layouts.seo')
@@ -53,6 +57,7 @@
     <!-- Custom Style -->
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/custom_style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/new_responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/rtl_mobile_fix.css') }}?v=2026100801">
 
     <!-- Jquery Js -->
     <script src="{{ asset('assets/frontend/default/js/jquery-3.7.1.min.js') }}"></script>
@@ -60,129 +65,64 @@
 
 </head>
 <Style>
-    
-    /*body{*/
-    /*    direction: rlt;*/
-    /*}*/
-    .testimonials-wrapper{
+    html,
+    body {
+        direction: rtl;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .testimonials-wrapper {
         direction: ltr;
     }
-    /*.form-control{*/
-    /*    padding: 11px 78px;*/
-    /*}*/
-    .logo-image img {
-        height: 52px;
-    }
-    .child_category_menu {
-        left: calc(-100% + 0px);
-    }
-    .header-area.container{
-        direction: rlt;
-    }
-    .testimonials-wrapper .container .align-items-center{
+
+    .testimonials-wrapper .container .align-items-center,
+    .accordion-collapse .accordion-body .answer {
         direction: rtl;
     }
-    
-    .eBtn .fa-play{
+
+    .logo-image img {
+        height: 52px;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .eBtn .fa-play {
         direction: ltr;
         margin: 6px;
     }
-    .form-control{
-        direction: ltr;
+
+    .form-control,
+    ul .dropdown-menu,
+    .dropmenu-end,
+    .show {
+        direction: rtl;
     }
-    ul .dropdown-menu , .dropmenu-end , .show{
-        direction: ltr;
-    }
-    .accordion-collapse .accordion-body .answer{
-            direction: rtl;
-    }
-    
-    @media (min-width: 344px) and (max-width: 882px){
-        body{
-         margin-left: -130px;
-         margin-right: 20px;   
+
+    @media (max-width: 1199.98px) {
+        body {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            width: 100% !important;
         }
-        
+
         .offcanvas {
-            margin-left: 155px;
-            margin-right: 40px;
-            display: block;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            max-width: min(92vw, 400px);
         }
-        .offcanvas-backdrop{
-            width: 100vh;
-            height: 100%;
+
+        .offcanvas-backdrop {
+            width: 100vw !important;
+            height: 100vh !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
         }
-        
-    }
-    
-    
-    
-    @media (min-width: 360px) and (max-width: 767px){
-        body{
-         margin-left: -130px;
-         margin-right: -10px;   
-        }
-        .offcanvas {
-            margin-left: 125px;
-            margin-right: 60px;
-            display: block;
-        }
-        .offcanvas-backdrop{
-            width: 100vh;
-            height: 100%;
-        }
-        
-    }
-    
-    
-    
-    @media (min-width: 768px) and (max-width: 1024px){
-        .offcanvas {
-            margin-left: 135px;
-            display: block;
-        }
-        .offcanvas-backdrop{
-            width: 100vh;
-            height: 100%;
-        }
-        body{
-         margin-left: -135px;
-         margin-right: 0px;   
-        }
-        
-    }
-    @media (min-width: 820px) and (max-width: 1180px){
-        body{
-            margin-left: 0;
-        }
-        .offcanvas {
-            margin-left: 0px;
-            display: block;
-        }
-        .offcanvas-backdrop{
-            margin-left: 0px;
-            height: 100%;
-        }
-        
-    }
-    @media (min-width: 912px) and (max-width: 1368px){
-        body{
-            margin-left: 0;
-        }
-        .offcanvas {
-            margin-left: 0px;;
-            display: block;
-        }
-        .offcanvas-backdrop{
-            width: 1000vh;
-            height: 100%;
-        }
-        
     }
 </Style>
 
 
-<body dir="rlt" style="direction: rtl; ">
+<body dir="{{ $activeDirection }}">
     @php $current_route_name = Route::currentRouteName(); @endphp
     @php
         if (session('home')) {

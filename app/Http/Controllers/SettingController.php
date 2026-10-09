@@ -42,6 +42,43 @@ class SettingController extends Controller
         return redirect()->back();
     }
 
+    public function sham_cash_settings()
+    {
+        $page_data['sham_cash_account']      = get_settings('sham_cash_account');
+        $page_data['sham_cash_api_key']      = get_settings('sham_cash_api_key');
+        $page_data['sham_cash_base_url']     = get_settings('sham_cash_base_url');
+        $page_data['system_withdraw_account'] = get_settings('system_withdraw_account');
+        return view('admin.setting.sham_cash', $page_data);
+    }
+
+    public function sham_cash_settings_update(Request $request)
+    {
+        $request->validate([
+            'sham_cash_account'       => 'required',
+            'sham_cash_api_key'       => 'required',
+            'sham_cash_base_url'      => 'required|url',
+            'system_withdraw_account' => 'required',
+        ]);
+
+        $settings = [
+            'sham_cash_account'       => $request->sham_cash_account,
+            'sham_cash_api_key'       => $request->sham_cash_api_key,
+            'sham_cash_base_url'      => $request->sham_cash_base_url,
+            'system_withdraw_account' => $request->system_withdraw_account,
+        ];
+
+        foreach ($settings as $key => $value) {
+            if (\DB::table('settings')->where('type', $key)->exists()) {
+                \DB::table('settings')->where('type', $key)->update(['description' => $value]);
+            } else {
+                \DB::table('settings')->insert(['type' => $key, 'description' => $value]);
+            }
+        }
+
+        Session::flash('success', get_phrase('ShamCash settings updated successfully'));
+        return redirect()->back();
+    }
+
     public function website_settings()
     {
 

@@ -53,7 +53,7 @@
                                                         <span class="me-3"><i class="{{ $parent_category->icon }}"></i></span>
                                                         <span class="me-auto">{{ ucfirst($parent_category->title) }}</span>
                                                         @if ($child_categories->count() > 0)
-                                                            <span><i class="fi fi-sr-angle-small-right"></i></span>
+                                                            <span><i class="fi fi-sr-angle-small-left"></i></span>
                                                         @endif
                                                     </a>
 
@@ -81,6 +81,7 @@
                                 </ul>
                             </li>
                             <li class="pe-2 ps-5"><a href="{{ route('bootcamps') }}" class="@if ($current_route == 'bootcamps' || $current_route == 'bootcamp.details') active @endif">{{ get_phrase('Bootcamp') }}</a></li>
+                            <li class="pe-2 ps-5"><a href="{{ route('library') }}" class="@if ($current_route == 'library' || $current_route == 'library.details' || $current_route == 'library.category') active @endif">{{ get_phrase('Library') }}</a></li>
                             {{-- <li><a href="{{ route('team.packages') }}" class="@if ($current_route == 'team.packages' || $current_route == 'team.package.details') active @endif">{{ get_phrase('Team Training') }}</a></li> --}}
                             <li><a href="{{ route('tutor_list') }}" class="@if ($current_route == 'tutor_list') active @endif">{{ get_phrase('Find A Tutor') }}</a></li>
                         </ul>
@@ -200,6 +201,27 @@
                                             {{ get_phrase('My Courses') }}
                                         </a>
                                     </li>
+                                    @if (auth()->user()->role == 'student')
+                              
+                                    <li class="@if ($current_route == 'wallet.show') active @endif">
+        <a href="{{ route('wallet.show') }}">
+            <!-- You can use your own wallet icon or copy the one from My Courses and replace it later -->
+   <svg width="24" height="24" viewBox="0 0 122.88 101.33" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill="currentColor" d="M90.62,33.32h18.4v-2.79c-2.88-10.73-10.2-10.66-19.25-10.57c-1.49,0.02-2.84,0.03-2.92,0.03H18.07 
+    c-1.58,0-2.86-1.28-2.86-2.86c0-1.58,1.28-2.86,2.86-2.86h68.78c2.03,0,2.46,0,2.87-0.01c7.74-0.08,14.5-0.15,19.3,4.38v-1.31 
+    c0-3.2-1.31-6.1-3.42-8.21c-2.11-2.11-5.02-3.42-8.21-3.42H17.34c-3.2,0-6.1,1.31-8.21,3.42c-2.11,2.11-3.42,5.02-3.42,8.21v66.64 
+    c0,3.2,1.31,6.1,3.42,8.21c2.11,2.11,5.02,3.42,8.21,3.42h80.04c3.2,0,6.1-1.31,8.21-3.42c2.11-2.11,3.42-5.02,3.42-8.21v-9.46 
+    h-18.4c-5.55,0-10.6-2.27-14.25-5.92c-3.65-3.65-5.92-8.7-5.92-14.25v-0.87c0-5.55,2.27-10.6,5.92-14.25 
+    C80.02,35.59,85.06,33.32,90.62,33.32z M114.73,33.43c2.07,0.31,3.92,1.29,5.33,2.71c1.74,1.74,2.81,4.14,2.81,6.78v21.6 
+    c0,2.76-1.12,5.26-2.93,7.07c-1.39,1.39-3.2,2.38-5.21,2.76v9.63c0,4.77-1.95,9.11-5.09,12.25c-3.14,3.14-7.48,5.09-12.25,5.09 
+    H17.34c-4.77,0-9.11-1.95-12.25-5.09C1.95,93.1,0,88.76,0,83.99V17.34c0-4.77,1.95-9.11,5.09-12.25C8.23,1.95,12.57,0,17.34,0 
+    h80.04c4.77,0,9.11,1.95,12.25,5.09c3.14,3.14,5.09,7.48,5.09,12.25V33.43z M88.14,46.11c4.05,0,7.33,3.28,7.33,7.33 
+    c0,4.05-3.28,7.33-7.33,7.33c-4.05,0-7.33-3.28-7.33-7.33C80.81,49.39,84.09,46.11,88.14,46.11z"/>
+</svg>
+            {{ get_phrase('My Wallet') }}
+        </a>
+    </li>
+    @endif
                                     <li>
                                         <a class="dropdown-item" href="{{ route('my.profile') }}">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -216,6 +238,12 @@
                                         <a class="dropdown-item" href="{{ route('my.bootcamps') }}" id="bootcamp-icon">
                                             <i class="fi-rr-video-camera text-18px"></i>
                                             {{ get_phrase('My Bootcamps') }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('my.library') }}" id="library-icon">
+                                            <i class="fi-rr-books text-18px"></i>
+                                            {{ get_phrase('My Library') }}
                                         </a>
                                     </li>
                                     {{-- <li>
@@ -305,6 +333,10 @@
                                 $numberof_wishlist_item = App\Models\Wishlist::where('user_id', auth()->user()->id)->count();
                             @endphp
                             <li><a href="{{ route('my.courses') }}" class="btn btn-toggle-list d-inline-flex align-items-center text-16px fw-500 w-100 rounded border-0 py-3"> {{ get_phrase('My Courses') }}</a></li>
+                            @if (auth()->user()->role == 'student')
+                            <li><a href="{{ route('wallet.show') }}" class="btn btn-toggle-list d-inline-flex align-items-center text-16px fw-500 w-100 rounded border-0 py-3"> {{ get_phrase('My Wallet') }}</a></li>
+                            @endif
+                            <li><a href="{{ route('my.library') }}" class="btn btn-toggle-list d-inline-flex align-items-center text-16px fw-500 w-100 rounded border-0 py-3"> {{ get_phrase('My Library') }}</a></li>
                             <li><a href="{{ route('wishlist') }}" class="btn btn-toggle-list d-inline-flex align-items-center text-16px fw-500 w-100 rounded border-0 py-3"> {{ get_phrase('Wishlist') }} <span class="badge bg-pink ms-auto">{{ $numberof_wishlist_item }}</span></a></li>
                             <li><a href="{{ route('my.profile') }}" class="btn btn-toggle-list d-inline-flex align-items-center text-16px fw-500 w-100 rounded border-0 py-3"> {{ get_phrase('My profile') }}</a></li>
                             <li><a href="{{ route('message') }}" class="btn btn-toggle-list d-inline-flex align-items-center text-16px fw-500 w-100 rounded border-0 py-3"> {{ get_phrase('Message') }}</a></li>
@@ -337,6 +369,7 @@
                         </div>
                     </li>
                     <li><a href="{{ route('bootcamps') }}" class="btn btn-toggle-list d-inline-flex align-items-center text-16px fw-500 w-100 rounded border-0 py-3">{{ get_phrase('Bootcamp') }}</a></li>
+                    <li><a href="{{ route('library') }}" class="btn btn-toggle-list d-inline-flex align-items-center text-16px fw-500 w-100 rounded border-0 py-3">{{ get_phrase('Library') }}</a></li>
                     {{-- <li><a href="{{ route('team.packages') }}" class="btn btn-toggle-list d-inline-flex align-items-center text-16px fw-500 w-100 rounded border-0 py-3">{{ get_phrase('Team Training') }}</a></li> --}}
                     </ul>
                 </div>

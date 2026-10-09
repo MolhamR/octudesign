@@ -24,18 +24,25 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(Request $request)
     {
-        if($request->user_agent){
-            $session_id = DeviceIp::where('user_agent', $request->user_agent)->first()->session_id;
-            if($session_id){
-                // Get the session file path (typically stored in storage/framework/sessions)
-                $sessionFilePath = storage_path('framework/sessions/' . $session_id);
-                // Check if the session file exists and delete it
+        if ($request->filled('user_agent')) {
+            $device = DeviceIp::where('user_agent', $request->query('user_agent'))->first();
+
+            if (! $device) {
+                Session::flash('error', get_phrase('This login confirmation link is invalid or has already been used. Please login again to request a new confirmation email.'));
+                return redirect(route('login'));
+            }
+
+            if ($device->session_id) {
+                $sessionFilePath = storage_path('framework/sessions/' . $device->session_id);
+
                 if (File::exists($sessionFilePath)) {
                     File::delete($sessionFilePath);
-                    DeviceIp::where('user_agent', $request->user_agent)->delete();
                 }
-                Session::flash('success', get_phrase('You have successfully verified. You can login now.'));
             }
+
+            $device->delete();
+            Session::flash('success', get_phrase('You have successfully verified. You can login now.'));
+
             return redirect(route('login'));
         }
 

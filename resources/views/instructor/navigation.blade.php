@@ -65,6 +65,25 @@
             </li>
 
 
+            <li class="sidebar-first-li first-li-have-sub @if ($current_route == 'instructor.library' || $current_route == 'instructor.library.create' || $current_route == 'instructor.library.edit') active showMenu @endif">
+                <a href="javascript:void(0);">
+                    <span class="icon fi fi-rr-books"></span>
+                    <div class="text">
+                        <span>{{ get_phrase('Library') }}</span>
+                    </div>
+                </a>
+                <ul class="first-sub-menu">
+                    <li class="first-sub-menu-title fs-14px mb-18px">{{ get_phrase('Library') }}</li>
+                    <li class="sidebar-second-li @if ($current_route == 'instructor.library' || $current_route == 'instructor.library.edit') active @endif">
+                        <a href="{{ route('instructor.library') }}">{{ get_phrase('Manage Books') }}</a>
+                    </li>
+                    <li class="sidebar-second-li @if ($current_route == 'instructor.library.create') active @endif">
+                        <a href="{{ route('instructor.library.create') }}">{{ get_phrase('Add New Book') }}</a>
+                    </li>
+                </ul>
+            </li>
+
+
             {{-- <li class="sidebar-first-li first-li-have-sub @if ($current_route == 'instructor.team.packages' || $current_route == 'instructor.team.packages.create' || $current_route == 'instructor.team.packages.edit' || $current_route == 'instructor.team.packages.purchase.history' || $current_route == 'instructor.team.packages.purchase.invoice') active showMenu @endif">
                 <a href="javascript:void(0);">
                     <span class="icon fi fi-rr-document-signed"></span>
@@ -116,6 +135,15 @@
                     <span class="icon fi fi-sr-arrow-trend-up"></span>
                     <div class="text">
                         <span>{{ get_phrase('Sales') }}</span>
+                    </div>
+                </a>
+            </li>
+
+            <li class="sidebar-first-li {{ $current_route == 'instructor.wallet.show' ? 'active' : '' }}">
+                <a href="{{ route('instructor.wallet.show') }}">
+                    <span class="icon fi fi-rr-wallet"></span>
+                    <div class="text">
+                        <span>{{ get_phrase('My Wallet') }}</span>
                     </div>
                 </a>
             </li>

@@ -1,0 +1,31 @@
+@php
+    $category = App\Models\LibraryCategory::where('id', $id)->first();
+    $all_categories = App\Models\LibraryCategory::orderBy('sort', 'asc')->orderBy('id', 'asc')->get();
+@endphp
+
+<form action="{{ route('admin.library.category.update', $id) }}" method="post">@csrf
+    <div class="fpb7 mb-2">
+        <label class="form-label ol-form-label" for="parent_id">{{ get_phrase('Parent category') }}</label>
+        <select class="form-control ol-form-control select2" name="parent_id" id="parent_id" required>
+            <option value="0" @if ($category->parent_id == 0) selected @endif>{{ get_phrase('None (Top level)') }}</option>
+            @foreach ($all_categories->where('parent_id', 0)->where('id', '!=', $category->id) as $item)
+                <option value="{{ $item->id }}" @if ($category->parent_id == $item->id) selected @endif>{{ $item->title }}</option>
+                @foreach ($item->childs->sortBy('sort')->where('id', '!=', $category->id) as $child_category)
+                    <option value="{{ $child_category->id }}" @if ($category->parent_id == $child_category->id) selected @endif>&mdash;&mdash; {{ $child_category->title }}</option>
+                    @foreach ($child_category->childs->sortBy('sort')->where('id', '!=', $category->id) as $sub_category)
+                        <option value="{{ $sub_category->id }}" @if ($category->parent_id == $sub_category->id) selected @endif>&mdash;&mdash;&mdash;&mdash; {{ $sub_category->title }}</option>
+                    @endforeach
+                @endforeach
+            @endforeach
+        </select>
+    </div>
+
+    <div class="fpb7 mb-2">
+        <label class="form-label ol-form-label" for="title">{{ get_phrase('Title') }} <span class="text-danger">*</span></label>
+        <input class="form-control ol-form-control" type="text" id="title" name="title" value="{{ $category->title }}" required>
+    </div>
+
+    <div class="fpb7 mb-2">
+        <button type="submit" class="btn ol-btn-primary">{{ get_phrase('Update category') }}</button>
+    </div>
+</form>

@@ -21,7 +21,7 @@ class IpDetectorMiddleware
         if (Auth::check() && auth()->user()->role != 'admin') {
             $user            = Auth::user();
             $current_ip      = request()->getClientIp();
-            $current_user_agent      = base64_encode(request()->header('user-agent'));
+            $current_user_agent      = base64_encode($user->id . request()->header('user-agent'));
             $allowed_devices = get_settings('device_limitation') ?? 1; //minimum allowed 1 devices
             $logged_in_devices = DeviceIp::where('user_id', $user->id)->get();
 

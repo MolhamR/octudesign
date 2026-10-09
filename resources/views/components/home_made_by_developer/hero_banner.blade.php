@@ -4,8 +4,8 @@
 
 <section class="banner-wraper mt-0 mt-md-5">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 order-2 order-md-1">
+        <div class="row justify-content-center home-hero-row">
+            <div class="col-md-6 home-hero-text">
                 <div class="banner-content">
                     <h5 class="d-flex"><img class="builder-editable" builder-identity="1" src="{{asset('assets/page-builder/block-image/roket.svg')}}" alt="..."> <span class="builder-editable" builder-identity="2">{{ get_phrase('The Leader in online learning')}}</span></h5>
                     <h1>
@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-8 col-md-6 order-1 order-md-2">
+            <div class="col-sm-8 col-md-6 home-hero-media">
                 <div class="banner-image mt-0 mt-md-5">
                     <img class="large-img" src="{{ asset(get_frontend_settings('banner_image')) }}" alt="banner-image">
                     <div class="over-text">

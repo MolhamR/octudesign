@@ -2,7 +2,7 @@
     $current_route = Route::currentRouteName();
 @endphp
 
-<div class="col-lg-3">
+<div class="col-lg-3 account-sidebar-column">
     <div class="gradient-border">
         <div class="course-sideBar">
             <div class="profile-info">

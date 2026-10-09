@@ -5,7 +5,7 @@
 <section class="testimonials-wrapper section-padding">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-5 col-md-6">
+            <div class="col-lg-5 col-md-6 home-about-media">
                 <div class="skill-image position-relative">
                     <img class="builder-editable" builder-identity="1" src="{{ asset('assets/frontend/default/image/skill-image.png') }}" alt="...">
                     <div class="over-text">
@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-7 col-md-6">
+            <div class="col-lg-7 col-md-6 home-about-text">
                 <div class="skil-content">
                     <span class="title-head builder-editable" builder-identity="4">{{ get_phrase('Know About Us') }}</span>
                     <h2 class="title"><span class="builder-editable" builder-identity="5">{{ get_phrase('Learn & Grow Your Skills From ') }}</span> <span class="gradient shadow-none color builder-editable" builder-identity="52nd">{{ get_phrase('Educate') }}</span>

@@ -26,6 +26,13 @@ Route::controller(CourseController::class)->group(function () {
     Route::get('course/{slug}', 'course_details')->name('course.details');
 });
 
+// library (books) page
+Route::controller(App\Http\Controllers\student\LibraryController::class)->group(function () {
+    Route::get('library', 'index')->name('library');
+    Route::get('library/details/{slug}', 'details')->name('library.details');
+    Route::get('library/{category}', 'index')->name('library.category');
+});
+
 // blogs page
 Route::controller(BlogController::class)->middleware('blog.visibility')->group(function () {
     Route::get('blogs/{category?}', 'index')->name('blogs');

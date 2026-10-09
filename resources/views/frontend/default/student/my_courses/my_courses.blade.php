@@ -11,7 +11,7 @@
                 <div class="col-lg-3">
                     @include('frontend.default.my_courses.left_sidebar')
                 </div>
-                <div class="col-lg-9">
+                <div class="col-lg-9 my-courses-scroll-panel">
                     <h4 class="g-title">{{ get_phrase('My Courses') }}</h4>
                     <div class="row mt-5">
                         @foreach ($courses as $row)

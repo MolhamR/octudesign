@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\frontend\HomeController;
+use App\Http\Controllers\frontend\LanguageController;
 
 //Cache clear route
 Route::get('/clear-cache', function () {
@@ -20,6 +21,8 @@ Route::get('/clear-cache', function () {
 });
 
 Route::get('home/switch/{id}', [HomeController::class, 'homepage_switcher'])->name('home.switch');
+Route::get('select-language', [LanguageController::class, 'select_lng'])->name('select.language.query');
+Route::get('select-language/{language}', [LanguageController::class, 'select_lng'])->name('select.language.public');
 
 //Redirect route
 Route::get('/dashboard', function () {

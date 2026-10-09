@@ -38,6 +38,30 @@
             @endif
 
 
+            @if (has_permission('admin.library.categories'))
+                <li class="sidebar-first-li first-li-have-sub @if ($current_route == 'admin.library.categories' || $current_route == 'admin.library.items') active showMenu @endif">
+                    <a href="javascript:void(0);">
+                        <span class="icon fi fi-rr-books"></span>
+                        <div class="text">
+                            <span>{{ get_phrase('Library') }}</span>
+                        </div>
+                    </a>
+                    <ul class="first-sub-menu">
+                        <li class="first-sub-menu-title fs-14px mb-18px">{{ get_phrase('Library') }}</li>
+                        <li class="sidebar-second-li @if ($current_route == 'admin.library.categories') active @endif">
+                            <a href="{{ route('admin.library.categories') }}">{{ get_phrase('Categories') }}</a>
+                        </li>
+                        <li class="sidebar-second-li @if ($current_route == 'admin.library.items') active @endif">
+                            <a href="{{ route('admin.library.items') }}">{{ get_phrase('Manage Books') }}</a>
+                        </li>
+                        <li class="sidebar-second-li @if ($current_route == 'admin.library.item.create') active @endif">
+                            <a href="{{ route('admin.library.item.create') }}">{{ get_phrase('Add new book') }}</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+
+
             @if (has_permission('admin.courses'))
                 <li class="sidebar-first-li first-li-have-sub @if ($current_route == 'admin.courses' || $current_route == 'admin.course.create' || $current_route == 'admin.course.edit' || $current_route == 'admin.coupons') active showMenu @endif">
                     <a href="javascript:void(0);">
@@ -177,6 +201,11 @@
                         @if (has_permission('admin.offline.payments'))
                             <li class="sidebar-second-li {{ $current_route == 'admin.wallet' ? 'active' : '' }}">
                                 <a href="{{ route('admin.wallet') }}">{{ get_phrase('Student Wallet') }}</a>
+                            </li>
+                        @endif
+                        @if (has_permission('admin.system.wallet'))
+                            <li class="sidebar-second-li {{ $current_route == 'admin.system.wallet' ? 'active' : '' }}">
+                                <a href="{{ route('admin.system.wallet') }}">{{ get_phrase('System Wallet') }}</a>
                             </li>
                         @endif
 
@@ -363,12 +392,13 @@
             has_permission('admin.open.ai.settings') ||
             has_permission('admin.pages') ||
             has_permission('admin.seo.settings') ||
+            has_permission('admin.sham_cash.settings') ||
             has_permission('admin.about'))
         <nav class="sidebar-nav">
             <h3 class="sidebar-title fs-12px px-30px text-uppercase pb-3">{{ get_phrase('Settings') }}</h3>
             <ul class="px-14px pb-24px mb-5 pb-5">
                 <li
-                    class="sidebar-first-li first-li-have-sub {{ $current_route == 'admin.system.settings' || $current_route == 'admin.website.settings' || $current_route == 'admin.language.phrase.edit' || $current_route == 'admin.payment.settings' || $current_route == 'admin.manage.language' || $current_route == 'admin.notification.settings' || $current_route == 'admin.live.class.settings' || $current_route == 'admin.live.class.settings' || $current_route == 'admin.certificate.settings' || $current_route == 'admin.player.settings' || $current_route == 'admin.open.ai.settings' || $current_route == 'admin.pages' || $current_route == 'admin.seo.settings' || $current_route == 'admin.about' ? 'active' : '' }}">
+                    class="sidebar-first-li first-li-have-sub {{ $current_route == 'admin.system.settings' || $current_route == 'admin.website.settings' || $current_route == 'admin.language.phrase.edit' || $current_route == 'admin.payment.settings' || $current_route == 'admin.manage.language' || $current_route == 'admin.notification.settings' || $current_route == 'admin.live.class.settings' || $current_route == 'admin.live.class.settings' || $current_route == 'admin.certificate.settings' || $current_route == 'admin.player.settings' || $current_route == 'admin.open.ai.settings' || $current_route == 'admin.pages' || $current_route == 'admin.seo.settings' || $current_route == 'admin.sham_cash.settings' || $current_route == 'admin.about' ? 'active' : '' }}">
                     <a href="javascript:void(0);">
                         <span class="icon fi fi-rr-settings"></span>
                         <div class="text">
@@ -386,6 +416,12 @@
                         <li class="sidebar-second-li {{ $current_route == 'admin.payment.settings' ? 'active' : '' }}">
                             <a href="{{ route('admin.payment.settings') }}">{{ get_phrase('Payment Settings') }}</a>
                         </li>
+
+                        @if (has_permission('admin.sham_cash.settings'))
+                            <li class="sidebar-second-li {{ $current_route == 'admin.sham_cash.settings' ? 'active' : '' }}">
+                                <a href="{{ route('admin.sham_cash.settings') }}">{{ get_phrase('ShamCash Settings') }}</a>
+                            </li>
+                        @endif
 
                         <li class="sidebar-second-li {{ $current_route == 'admin.manage.language' || $current_route == 'admin.language.phrase.edit' ? 'active' : '' }}">
                             <a href="{{ route('admin.manage.language') }}">{{ get_phrase('Manage Language') }}</a>
