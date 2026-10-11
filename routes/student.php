@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/wallet/sham-cash-account', 'saveAccount')->name('wallet.sham_cash.account.update');
         Route::post('/wallet/top-up', 'requestTopUp')->name('wallet.sham_cash.top_up');
         Route::get('/wallet/top-up/verify', 'showTopUpVerify')->name('wallet.sham_cash.verify');
+        Route::post('/wallet/top-up/cancel', 'cancelTopUp')->name('wallet.sham_cash.cancel');
         Route::post('/wallet/verify-payments', 'verifyPayments')->name('wallet.sham_cash.verify_payments');
     });
 

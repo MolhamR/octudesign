@@ -33,6 +33,13 @@
                         {{ get_phrase('My Courses') }}
                     </a>
                 </li>
+
+                <li class="@if ($current_route == 'my.library') active @endif">
+                    <a href="{{ route('my.library') }}">
+                        <i class="fi-rr-books text-23px me-3 ms-1"></i>
+                        {{ get_phrase('My Library') }}
+                    </a>
+                </li>
                 @if (auth()->user()->role == 'student')
           
           

@@ -4,6 +4,7 @@
 
 @php
     $parent_categories = DB::table('categories')->where('parent_id', 0)->latest('id')->get();
+    $parent_library_categories = DB::table('library_categories')->where('parent_id', 0)->where('status', 1)->orderBy('sort')->orderBy('id')->get();
     $current_route = Route::currentRouteName();
 @endphp
 
@@ -81,7 +82,64 @@
                                 </ul>
                             </li>
                             <li class="pe-2 ps-5"><a href="{{ route('bootcamps') }}" class="@if ($current_route == 'bootcamps' || $current_route == 'bootcamp.details') active @endif">{{ get_phrase('Bootcamp') }}</a></li>
-                            <li class="pe-2 ps-5"><a href="{{ route('library') }}" class="@if ($current_route == 'library' || $current_route == 'library.details' || $current_route == 'library.category') active @endif">{{ get_phrase('Library') }}</a></li>
+                            <li class="have-mega-menu"><a class="menu-parent-a @if (in_array($current_route, ['library', 'library.category', 'library.details'])) active @endif" href="{{ route('library') }}">{{ get_phrase('Library') }}</a>
+                                <ul class="mega-dropdown-menu mega main-mega-menu">
+                                    <div class="mega-menu-items">
+                                        <ul class="mega_list">
+                                            @foreach ($parent_library_categories->take(12) as $parent_category)
+                                                @php
+                                                    $child_categories = DB::table('library_categories')->where('parent_id', $parent_category->id)->where('status', 1);
+                                                @endphp
+                                                <li>
+                                                    <a href="{{ route('library.category', $parent_category->slug) }}">
+                                                        <span class="me-3"><i class="fi-rr-books"></i></span>
+                                                        <span class="me-auto">{{ ucfirst($parent_category->title) }}</span>
+                                                        @if ($child_categories->count() > 0)
+                                                            <span><i class="fi fi-sr-angle-small-left"></i></span>
+                                                        @endif
+                                                    </a>
+
+                                                    @if ($child_categories->count() > 0)
+                                                        <ul class="child_category_menu">
+                                                            @foreach ($child_categories->get() as $child_category)
+                                                                @php
+                                                                    $grand_categories = DB::table('library_categories')->where('parent_id', $child_category->id)->where('status', 1);
+                                                                @endphp
+                                                                <li>
+                                                                    <a href="{{ route('library.category', $child_category->slug) }}">
+                                                                        <span class="me-auto">{{ ucfirst($child_category->title) }}</span>
+                                                                        @if ($grand_categories->count() > 0)
+                                                                            <span><i class="fi fi-sr-angle-small-left"></i></span>
+                                                                        @endif
+                                                                    </a>
+
+                                                                    @if ($grand_categories->count() > 0)
+                                                                        <ul class="child_category_menu">
+                                                                            @foreach ($grand_categories->get() as $grand_category)
+                                                                                <li>
+                                                                                    <a href="{{ route('library.category', $grand_category->slug) }}">
+                                                                                        <span class="me-auto">{{ ucfirst($grand_category->title) }}</span>
+                                                                                    </a>
+                                                                                </li>
+                                                                            @endforeach
+                                                                        </ul>
+                                                                    @endif
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @endif
+                                                </li>
+                                            @endforeach
+                                            <li>
+                                                <a href="{{ route('library') }}">
+                                                    <span class="me-3"><i class="fas fa-list-ul"></i></span>
+                                                    <span class="me-auto">{{ get_phrase('All Books') }}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </ul>
+                            </li>
                             {{-- <li><a href="{{ route('team.packages') }}" class="@if ($current_route == 'team.packages' || $current_route == 'team.package.details') active @endif">{{ get_phrase('Team Training') }}</a></li> --}}
                             <li><a href="{{ route('tutor_list') }}" class="@if ($current_route == 'tutor_list') active @endif">{{ get_phrase('Find A Tutor') }}</a></li>
                         </ul>

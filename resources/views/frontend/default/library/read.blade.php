@@ -34,15 +34,6 @@
             gap: 10px;
         }
 
-        #reader_topbar .secure-badge {
-            margin-left: auto;
-            font-size: 11px;
-            font-weight: 500;
-            background: rgba(255, 255, 255, .12);
-            padding: 4px 10px;
-            border-radius: 20px;
-        }
-
         #my_pdf_viewer {
             margin-top: 48px;
             margin-bottom: 50px;
@@ -131,6 +122,12 @@
             white-space: nowrap;
             pointer-events: none;
         }
+
+        body.capture-guard #my_pdf_viewer,
+        body.capture-guard #reader_topbar,
+        body.capture-guard #wm_layer {
+            filter: blur(22px);
+        }
     </style>
     <script src="{{ asset('assets/global/pdf-canvas/pdf.min.js') }}"></script>
     <script src="{{ asset('assets/global/pdf-canvas/pdf.worker.min.js') }}"></script>
@@ -139,7 +136,6 @@
 <body>
     <div id="reader_topbar">
         <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ $library_item->title }}</span>
-        <span class="secure-badge">🔒 {{ get_phrase('Protected') }}</span>
     </div>
 
     <div id="wm_layer"></div>
@@ -169,21 +165,34 @@
             zoom: 1
         };
 
-        // ---- watermark (traceable) --------------------------------------------
+        // ---- watermark: platform brand, like the course player ----------------
         (function buildWatermark() {
-            var text = "{{ addslashes(auth()->user()->name) }} · {{ auth()->user()->id }}";
+            var logo = "{{ get_player_settings('watermark_logo') ? get_image(get_player_settings('watermark_logo')) : '' }}";
+            var brand = "{{ addslashes(get_settings('system_name')) }}";
             var layer = document.getElementById('wm_layer');
-            var stepX = 320,
+            var stepX = 260,
                 stepY = 170;
-            for (let y = 40; y < window.innerHeight + 200; y += stepY) {
-                for (let x = -40; x < window.innerWidth + 120; x += stepX) {
-                    var s = document.createElement('span');
-                    s.textContent = text;
-                    s.style.top = y + 'px';
-                    s.style.left = x + 'px';
-                    s.style.display = 'block';
-                    s.style.transform = 'rotate(-28deg)';
-                    wm_layer.appendChild(s);
+            for (let y = 30; y < window.innerHeight + 200; y += stepY) {
+                for (let x = -40; x < window.innerWidth + 160; x += stepX) {
+                    var el;
+                    if (logo) {
+                        el = document.createElement('img');
+                        el.src = logo;
+                        el.style.width = '90px';
+                        el.style.height = 'auto';
+                    } else {
+                        el = document.createElement('span');
+                        el.textContent = brand;
+                        el.style.fontSize = '16px';
+                        el.style.fontWeight = '700';
+                    }
+                    el.style.position = 'absolute';
+                    el.style.top = y + 'px';
+                    el.style.left = x + 'px';
+                    el.style.transform = 'rotate(-25deg)';
+                    el.style.opacity = '0.16';
+                    el.style.pointerEvents = 'none';
+                    layer.appendChild(el);
                 }
             }
         })();
@@ -260,6 +269,31 @@
             }
         });
         document.addEventListener('dragstart', e => e.preventDefault());
+
+        // ---- best-effort screen-capture deterrence ---------------------------
+        (function captureGuard() {
+            // Wipe the clipboard when the PrintScreen key is released (blocks the
+            // Windows "Print Screen" -> clipboard path when permission is granted).
+            window.addEventListener('keyup', function (e) {
+                if (e.key === 'PrintScreen' || e.code === 'PrintScreen') {
+                    try {
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                            navigator.clipboard.writeText('').catch(function () {});
+                        }
+                    } catch (err) {}
+                }
+            });
+
+            // Blur the reader whenever the window/tab loses focus so capture tools
+            // that steal focus record a blurred frame instead of readable text.
+            function hide() { document.body.classList.add('capture-guard'); }
+            function show() { document.body.classList.remove('capture-guard'); }
+            window.addEventListener('blur', hide);
+            window.addEventListener('focus', show);
+            document.addEventListener('visibilitychange', function () {
+                document.hidden ? hide() : show();
+            });
+        })();
     </script>
 </body>
 

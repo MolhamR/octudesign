@@ -32,11 +32,9 @@ class ShamCashController extends Controller
     {
         // The student does not enter an amount. Any transfer they make from
         // their ShamCash account is detected later and credited in full, so we
-        // only need to flag that a top-up is in progress.
+        // only need to flag that a top-up is in progress. The ShamCash account
+        // can be added or edited later on the verify page.
         $user = Auth::user();
-        if (empty($user->sham_cash_account)) {
-            return redirect()->back()->with('error', get_phrase('Please save your ShamCash account first.'));
-        }
 
         $wallet = Wallet::firstOrCreate(['user_id' => $user->id], ['balance' => 0, 'currency' => 'SYP']);
 
@@ -77,6 +75,19 @@ class ShamCashController extends Controller
         $page_data['wallet']         = Wallet::firstOrCreate(['user_id' => $user->id], ['balance' => 0, 'currency' => 'SYP']);
         $page_data['sham_cash_account'] = get_settings('sham_cash_account');
         return view('frontend.default.student.sham_cash_verify', $page_data);
+    }
+
+    public function cancelTopUp(Request $request)
+    {
+        $user = Auth::user();
+
+        // Cancel the in-progress payment: remove all pending transactions.
+        WalletTransaction::where('user_id', $user->id)
+            ->where('status', 'pending')
+            ->delete();
+
+        return redirect()->to(route('wallet.show'))
+            ->with('success', get_phrase('Payment cancelled. All pending top-up requests were removed.'));
     }
 
     public function verifyPayments(Request $request)

@@ -221,13 +221,29 @@ class LibraryController extends Controller
         return redirect()->route('payment');
     }
 
-    public function my_library()
+    public function my_library(Request $request)
     {
-        $page_data['purchased_items'] = LibraryPurchase::join('library_items', 'library_purchases.library_item_id', '=', 'library_items.id')
+        $query = LibraryPurchase::join('library_items', 'library_purchases.library_item_id', '=', 'library_items.id')
             ->leftJoin('users', 'library_items.user_id', '=', 'users.id')
-            ->select('library_purchases.*', 'library_items.title', 'library_items.slug', 'library_items.cover_image', 'library_items.file', 'library_items.description', 'users.name as instructor_name', 'users.photo as instructor_photo')
-            ->where('library_purchases.user_id', auth()->user()->id)
-            ->latest('library_purchases.id')->paginate(12);
+            ->leftJoin('library_categories', 'library_items.category_id', '=', 'library_categories.id')
+            ->select('library_purchases.*', 'library_items.title', 'library_items.slug', 'library_items.cover_image', 'library_items.file', 'library_items.description', 'library_items.category_id', 'users.name as instructor_name', 'users.photo as instructor_photo', 'library_categories.title as category_title', 'library_categories.slug as category_slug')
+            ->where('library_purchases.user_id', auth()->user()->id);
+
+        $category_details = null;
+        if ($request->filled('category')) {
+            $category_details = LibraryCategory::where('slug', $request->category)->where('status', 1)->first();
+            if ($category_details) {
+                $query->whereIn('library_items.category_id', LibraryCategory::descendant_ids($category_details->id));
+            }
+        }
+
+        if ($request->filled('search')) {
+            $query->where('library_items.title', 'like', '%' . $request->search . '%');
+        }
+
+        $page_data['purchased_items'] = $query->orderBy('library_categories.title')->orderByDesc('library_purchases.id')->paginate(12)->appends($request->query());
+        $page_data['category_details'] = $category_details;
+        $page_data['my_library_tree'] = LibraryCategory::owned_tree(auth()->user()->id);
 
         return view('frontend.' . get_frontend_settings('theme') . '.student.my_library', $page_data);
     }

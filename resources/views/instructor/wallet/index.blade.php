@@ -58,10 +58,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $wallet_label_map = [
+                                            'Wallet withdrawal' => get_phrase('Wallet withdrawal'),
+                                            'ShamCash wallet recharge' => get_phrase('ShamCash wallet recharge'),
+                                            'Wallet recharge' => get_phrase('Wallet recharge'),
+                                            'ShamCash top-up' => get_phrase('ShamCash top-up'),
+                                        ];
+                                    @endphp
                                     @foreach ($transactions as $transaction)
                                         <tr>
-                                            <td>{{ $transaction->created_at->format('Y-m-d H:i:s') }}</td>
-                                            <td>{{ $transaction->description }}</td>
+                                            <td>{{ $transaction->created_at ? $transaction->created_at->format('Y-m-d H:i:s') : get_phrase('N/A') }}</td>
+                                            <td>{{ $wallet_label_map[$transaction->description] ?? $transaction->description }}</td>
                                             <td>{{ number_format($transaction->amount, 2) }}</td>
                                             <td>{{ get_phrase('Withdrawal') }}</td>
                                             <td>

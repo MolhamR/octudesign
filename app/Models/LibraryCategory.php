@@ -36,6 +36,58 @@ class LibraryCategory extends Model
         return $ids;
     }
 
+    /**
+     * Nested tree of active categories that contain (directly or through a
+     * descendant) at least one book purchased by the given user.
+     */
+    public static function owned_tree($user_id)
+    {
+        $owned_ids = \Illuminate\Support\Facades\DB::table('library_purchases')
+            ->join('library_items', 'library_purchases.library_item_id', '=', 'library_items.id')
+            ->where('library_purchases.user_id', $user_id)
+            ->whereNotNull('library_items.category_id')
+            ->pluck('library_items.category_id')
+            ->unique()
+            ->all();
+
+        if (empty($owned_ids)) {
+            return [];
+        }
+
+        $categories = static::where('status', 1)->orderBy('sort')->orderBy('id')->get();
+
+        $by_id = [];
+        foreach ($categories as $category) {
+            $by_id[$category->id] = $category;
+        }
+
+        $keep = [];
+        foreach ($owned_ids as $id) {
+            while (isset($by_id[$id]) && empty($keep[$id])) {
+                $keep[$id] = true;
+                $id = $by_id[$id]->parent_id;
+            }
+        }
+
+        $grouped = [];
+        foreach ($categories as $category) {
+            if (isset($keep[$category->id])) {
+                $grouped[$category->parent_id][] = $category;
+            }
+        }
+
+        $build = function ($parent_id) use (&$build, $grouped) {
+            $nodes = [];
+            foreach ($grouped[$parent_id] ?? [] as $category) {
+                $category->children = $build($category->id);
+                $nodes[] = $category;
+            }
+            return $nodes;
+        };
+
+        return $build(0);
+    }
+
     public static function breadcrumb($category_id)
     {
         $trail = [];

@@ -7305,3 +7305,337 @@ span[class*="fi-rr-"]:before {
 .kindergarden-home .swiper-button-next{
     right: 0px;
 }
+
+/* Library mega-menu: only reveal a sub-level while its own parent item is hovered */
+/* Level 2 (sub category) */
+.main-mega-menu .mega_list > li > ul.child_category_menu {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: .4s;
+}
+.main-mega-menu .mega_list > li:hover > ul.child_category_menu {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+/* Level 3 (second sub category) */
+.main-mega-menu .mega_list > li > ul.child_category_menu li {
+    position: relative;
+}
+.main-mega-menu .mega_list > li > ul.child_category_menu > li > ul.child_category_menu {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: .4s;
+}
+.main-mega-menu .mega_list > li > ul.child_category_menu > li:hover > ul.child_category_menu {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* My Library page: subcategory filter tree */
+.my-library-filter .my-library-submenu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.my-library-filter .my-library-submenu .my-library-submenu {
+    margin-inline-start: 20px;
+    padding-inline-start: 12px;
+    border-inline-start: 1px solid #eceef4;
+}
+.my-library-filter .my-library-submenu a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #4b5162;
+    transition: 0.3s;
+}
+.my-library-filter .my-library-submenu a:hover,
+.my-library-filter .my-library-submenu a.active {
+    background: rgba(198, 100, 255, 0.1);
+    color: #c664ff;
+}
+.my-library-filter .menu-arrow {
+    font-size: 12px;
+    opacity: 0.6;
+}
+.my-library-group-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #192335;
+    margin: 0 0 16px;
+    padding-inline-start: 12px;
+    border-inline-start: 4px solid #c664ff;
+}
+/* My Books revamp: search + category chips */
+.ml-search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid #e7ebf3;
+    border-radius: 14px;
+    padding: 6px 8px 6px 14px;
+    box-shadow: 0 4px 14px rgba(20, 30, 60, .04);
+}
+.ml-search-box > i {
+    color: #9aa4b2;
+    font-size: 16px;
+}
+.ml-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    box-shadow: none !important;
+    height: 42px;
+    background: transparent;
+    font-size: 15px;
+    color: #1a2238;
+}
+.ml-search-clear {
+    color: #9aa4b2;
+    padding: 4px;
+    line-height: 1;
+}
+.ml-search-btn {
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #13BE95, #00907f);
+    color: #fff;
+    font-weight: 700;
+    padding: 10px 22px;
+}
+.ml-search-btn:hover {
+    color: #fff;
+    opacity: .95;
+}
+
+.ml-chips-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.ml-chip {
+    display: inline-flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #e7ebf3;
+    color: #4b5568;
+    border-radius: 50px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: .15s;
+}
+.ml-chip:hover {
+    border-color: #13BE95;
+    color: #00907f;
+}
+.ml-chip.active {
+    background: linear-gradient(135deg, #13BE95, #00907f);
+    border-color: transparent;
+    color: #fff;
+}
+.ml-chip-sub {
+    font-size: 12px;
+    padding: 6px 14px;
+    background: #f7fafc;
+}
+.ml-chip-sub::before {
+    content: "\00b7";
+    margin-inline-end: 6px;
+    opacity: .6;
+}
+
+/* Mobile nav offcanvas: deterministically slide in from the LEFT with an ease */
+@media (max-width: 991.98px) {
+    #offcanvasWithBothOptions.offcanvas {
+        display: flex !important;
+        left: 0 !important;
+        right: auto !important;
+        width: 320px;
+        max-width: 86vw;
+        visibility: hidden;
+        transform: translateX(-100%) !important;
+        transition: transform .6s cubic-bezier(.22, 1, .36, 1), visibility .6s ease !important;
+        will-change: transform;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+    #offcanvasWithBothOptions.offcanvas.showing,
+    #offcanvasWithBothOptions.offcanvas.show {
+        visibility: visible;
+        transform: translateX(0) !important;
+    }
+}
+
+/* Home hero heading: slightly smaller type, responsive down to small screens */
+.banner-content h1 {
+    font-size: 44px;
+    line-height: 54px;
+}
+@media (max-width: 991.98px) {
+    .banner-content h1 {
+        font-size: 32px;
+        line-height: 42px;
+    }
+}
+@media (max-width: 575.98px) {
+    .banner-content h1 {
+        font-size: 26px;
+        line-height: 36px;
+    }
+}
+
+/* Prevent horizontal scrolling on small screens */
+@media (max-width: 767.98px) {
+    html,
+    body {
+        overflow-x: hidden;
+    }
+    .banner-content h1,
+    .banner-content h1 span {
+        max-width: 100%;
+        overflow-wrap: break-word;
+    }
+}
+
+/* Smooth offcanvas backdrop fade */
+.offcanvas-backdrop {
+    transition: opacity .4s ease !important;
+}
+
+/* Desktop header: keep all items inside the 1180px container (fixes laptop "need to zoom out") */
+@media (min-width: 992px) {
+    .header-area .row.flex-md-nowrap {
+        --bs-gutter-x: 0.75rem;
+        flex-wrap: nowrap;
+    }
+    .header-area .header-menu {
+        min-width: 0;
+    }
+    .header-area .primary-menu > li,
+    .header-area .primary-menu li {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+    .header-area .primary-menu > li.pe-2.ps-5 {
+        padding-left: 13px !important;
+        padding-right: 13px !important;
+    }
+    .header-area .primary-menu li a {
+        font-size: 14px;
+        white-space: nowrap;
+    }
+    .header-area .row > .col-sm-5.col-md-3.col-xl-4 {
+        flex: 0 1 auto;
+        width: 210px;
+        max-width: 210px;
+    }
+    .header-area .logo-image img {
+        height: 36px;
+    }
+    .header-area .primary-end {
+        gap: 2px;
+    }
+    .header-area .primary-end > .d-flex {
+        gap: 0.6rem !important;
+    }
+}
+
+/* ==========================================================================
+   Mobile-dedicated experience (phones & small tablets)
+   Loaded after every theme stylesheet so it wins where it matters.
+   ========================================================================== */
+@media (max-width: 991.98px) {
+    html,
+    body {
+        overflow-x: hidden;
+    }
+    img,
+    video,
+    iframe,
+    embed,
+    object {
+        max-width: 100%;
+    }
+    iframe {
+        width: 100%;
+    }
+
+    /* Calmer vertical rhythm */
+    .section-padding {
+        padding-top: 56px !important;
+    }
+    .section-title {
+        margin-bottom: 30px;
+    }
+
+    /* Touch-friendly controls */
+    .eBtn,
+    .btn {
+        min-height: 44px;
+    }
+
+    /* Mobile offcanvas navigation */
+    #offcanvasWithBothOptions.offcanvas .offcanvas-body {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    #offcanvasWithBothOptions .nav-area ul li a {
+        width: 100% !important;
+    }
+    #offcanvasWithBothOptions .nav-search,
+    #offcanvasWithBothOptions .nav-search .search-field {
+        width: 100%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    body {
+        font-size: 15px;
+    }
+    .container,
+    .container-fluid {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    /* Compress large section spacing used across the site */
+    .section-padding {
+        padding-top: 40px !important;
+    }
+    .section-title {
+        margin-bottom: 24px;
+    }
+
+    /* Fluid section headings */
+    .section-title .title {
+        font-size: 26px !important;
+        line-height: 34px !important;
+    }
+
+    /* Media never overflows the viewport */
+    img,
+    video,
+    iframe {
+        height: auto;
+    }
+
+    /* Tables stay inside the viewport */
+    table {
+        max-width: 100%;
+    }
+
+    /* Footer reads better centred on phones */
+    .footer-wrap {
+        text-align: center;
+    }
+}

@@ -46,6 +46,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/css/responsive.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/css/custom.css') }}">
 
+    <!-- Cairo Arabic Font -->
+    @include('partials.cairo_font')
+
     @stack('css')
 
     <script type="text/javascript" src="{{ asset('assets/backend/js/jquery-3.7.1.min.js') }}"></script>

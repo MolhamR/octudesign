@@ -77,11 +77,6 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($reports as $key => $report)
-                                        @php
-                                            if ($report->course_id > 0) {
-                                                $item = App\Models\Course::where('id', $report->course_id)->firstOrNew();
-                                            }
-                                        @endphp
                                         <tr>
                                             <th scope="row">
                                                 <p class="row-number">{{ $key + 1 }}</p>
@@ -101,7 +96,7 @@
                                             <td>
                                                 <div class="dAdmin_profile d-flex align-items-center min-w-200px">
                                                     <div class="dAdmin_profile_name">
-                                                        <h4 class="title fs-14px">{{ $item->title }}</h4>
+                                                        <h4 class="title fs-14px">{{ $report->item_title }}</h4>
                                                     </div>
                                                 </div>
                                             </td>
@@ -126,9 +121,11 @@
 
                                             <td class="print-d-none">
                                                 <div class="adminTable-action">
-                                                    <a class="btn ol-btn-light ol-icon-btn" data-bs-toggle="tooltip" title="{{ get_phrase('Print') }}" href="{{ route('admin.purchase.history.invoice', $report->id) }}">
-                                                        <i class="fi-rr-print"></i>
-                                                    </a>
+                                                    @if ($report->history_type == 'course')
+                                                        <a class="btn ol-btn-light ol-icon-btn" data-bs-toggle="tooltip" title="{{ get_phrase('Print') }}" href="{{ route('admin.purchase.history.invoice', $report->id) }}">
+                                                            <i class="fi-rr-print"></i>
+                                                        </a>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

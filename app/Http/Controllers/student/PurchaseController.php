@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CartItem;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\LibraryPurchase;
 use App\Models\Payment_history;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,11 +16,39 @@ class PurchaseController extends Controller
 {
     public function purchase_history()
     {
-        $page_data['payments'] = Payment_history::join('courses', 'payment_histories.course_id', 'courses.id')
-            ->join('users', 'payment_histories.user_id', 'users.id')
-            ->where('payment_histories.user_id', auth()->user()->id)
-            ->select('payment_histories.*', 'courses.title as course_title', 'users.name as user_name')
-            ->latest('id')->paginate(10);
+        // Course / package payments
+        $course_payments = Payment_history::where('payment_histories.user_id', auth()->user()->id)
+            ->join('courses', 'payment_histories.course_id', 'courses.id')
+            ->select('payment_histories.*', 'courses.title as item_title')
+            ->latest('payment_histories.id')->get();
+
+        // Library (book) purchases
+        $book_purchases = LibraryPurchase::where('library_purchases.user_id', auth()->user()->id)
+            ->join('library_items', 'library_purchases.library_item_id', '=', 'library_items.id')
+            ->select('library_purchases.*', 'library_items.title as item_title')
+            ->orderByDesc('library_purchases.id')->get();
+
+        $payments = collect();
+        foreach ($course_payments as $payment) {
+            $payment->history_type = 'course';
+            $payments->push($payment);
+        }
+        foreach ($book_purchases as $book) {
+            $book->history_type = 'book';
+            $payments->push($book);
+        }
+        $payments = $payments->sortByDesc('created_at')->values();
+
+        $per_page = 10;
+        $page     = \Illuminate\Pagination\LengthAwarePaginator::resolveCurrentPage();
+        $page_data['payments'] = new \Illuminate\Pagination\LengthAwarePaginator(
+            $payments->forPage($page, $per_page),
+            $payments->count(),
+            $per_page,
+            $page,
+            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+        );
+
         $view_path = 'frontend.' . get_frontend_settings('theme') . '.student.purchase_history.index';
         return view($view_path, $page_data);
     }

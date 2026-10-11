@@ -41,6 +41,9 @@
     <!-- Custom Fonts -->
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/custome-front/custom-fronts.css') }}">
 
+    <!-- Cairo Arabic Font -->
+    @include('partials.cairo_font')
+
     <!-- Player Css -->
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/plyr.css') }}">
 
@@ -55,9 +58,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/global/tagify-master/dist/tagify.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- Custom Style -->
-    <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/custom_style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/new_responsive.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/rtl_mobile_fix.css') }}?v=2026100801">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/custom_style.css') }}?v=20261013">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/new_responsive.css') }}?v=20261013">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/rtl_mobile_fix.css') }}?v=20261013">
 
     <!-- Jquery Js -->
     <script src="{{ asset('assets/frontend/default/js/jquery-3.7.1.min.js') }}"></script>

@@ -19,7 +19,7 @@
                                 <table class="table eTable">
                                     <thead>
                                         <tr>
-                                            <th>{{ get_phrase('Course Name') }}</th>
+                                            <th>{{ get_phrase('Item Name') }}</th>
                                             <th>{{ get_phrase('Date') }}</th>
                                             <th>{{ get_phrase('Payment Method') }}</th>
                                             <th>{{ get_phrase('Price') }}</th>
@@ -29,15 +29,19 @@
                                     <tbody>
                                         @foreach ($payments as $payment)
                                             <tr>
-                                                <td>{{ $payment->course_title }}</td>
+                                                <td>{{ $payment->item_title }}</td>
                                                 <td>{{ date('Y-m-d', strtotime($payment->created_at)) }}</td>
                                                 <td>{{ ucfirst($payment->payment_type) }}</td>
                                                 <td>{{ currency($payment->amount) }}</td>
                                                 <td>
-                                                    <a href="{{ route('invoice', $payment->id) }}"
-                                                        class="d-flex align-items-center justify-content-center btn btn-primary text-18 text-white py-3" data-bs-toggle="tooltip" data-bs-title="{{get_phrase('Print Invoice')}}">
-                                                        <i class="fi fi-rr-print d-inline-flex"></i>
-                                                    </a>
+                                                    @if ($payment->history_type == 'course')
+                                                        <a href="{{ route('invoice', $payment->id) }}"
+                                                            class="d-flex align-items-center justify-content-center btn btn-primary text-18 text-white py-3" data-bs-toggle="tooltip" data-bs-title="{{get_phrase('Print Invoice')}}">
+                                                            <i class="fi fi-rr-print d-inline-flex"></i>
+                                                        </a>
+                                                    @else
+                                                        <span class="text-muted">—</span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

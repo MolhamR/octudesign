@@ -96,10 +96,6 @@
                                     <a href="{{ route('library.read', $library_item->slug) }}" class="eBtn gradient w-100 mb-3">
                                         <i class="fa-solid fa-book-open-reader me-2"></i>
                                         {{ get_phrase('Read now') }}</a>
-                                    <p class="text-12px text-muted mb-3">
-                                        <i class="fa-solid fa-lock me-1"></i>
-                                        {{ get_phrase('Protected reading. Downloading and copying are disabled.') }}
-                                    </p>
                                 @else
                                     <a href="{{ route('purchase.library', $library_item->id) }}" class="eBtn gradient w-100">
                                         <i class="fa-solid fa-cart-arrow-down me-2"></i>

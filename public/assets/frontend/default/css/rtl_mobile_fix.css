@@ -1,0 +1,49 @@
+/* Sidebar filter search */
+html[dir="rtl"] .search {
+    direction: rtl;
+}
+
+html[dir="rtl"] .search .form-control {
+    padding-right: 16px;
+    padding-left: 44px;
+}
+
+html[dir="rtl"] .search .submit {
+    right: auto;
+    left: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    top: 0;
+}
+
+/* Fix mega menu text direction and arrow for RTL */
+html[dir="rtl"] .main-mega-menu .mega_list li > a {
+    flex-direction: row-reverse !important;
+    text-align: right;
+}
+html[dir="rtl"] .main-mega-menu .mega_list li > a .me-auto {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+}
+html[dir="rtl"] .main-mega-menu .mega_list li > a span:last-child i.fi-sr-angle-small-right:before {
+    content: "\f130";
+}
+html[dir="rtl"] .main-mega-menu {
+    left: auto !important;
+    right: 0 !important;
+    transform: none !important;
+}
+html[dir="rtl"] .child_category_menu {
+    left: auto !important;
+    right: calc(100% + 2px) !important;
+}
+html[dir="rtl"] .widget .entry-widget .form-check-label {
+    text-align: right;
+}
+html[dir="rtl"] .form-check .form-check-input {
+    float: right;
+    margin-left: 0.5rem;
+    margin-right: 0;
+}

@@ -48,7 +48,7 @@ class FileUploader extends Model
                 $file_name = end($uploaded_path_arr);
                 $upload_to = str_replace('/' . $file_name, "", $upload_to);
                 if (!is_dir($upload_to)) {
-                    Storage::makeDirectory($upload_to);
+                    @mkdir($upload_to, 0755, true);
                 }
             }
 

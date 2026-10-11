@@ -25,6 +25,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/payment/style/vendors/bootstrap-icons-1.8.1/bootstrap-icons.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/global/icons/uicons-regular-rounded/css/uicons-regular-rounded.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/payment/style/css/own.css') }}" />
+    <!--Cairo Arabic Font-->
+    @include('partials.cairo_font')
     <!--Main Jquery-->
     <script src="{{ asset('assets/payment/style/vendors/jquery/jquery-3.7.1.min.js') }}"></script>
     <style>
